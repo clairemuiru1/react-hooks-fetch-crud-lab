@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import QuestionItem from "./QuestionItem";
 
 function QuestionForm(props) {
   const [formData, setFormData] = useState({
@@ -21,6 +22,23 @@ function QuestionForm(props) {
     event.preventDefault();
     console.log(formData);
   }
+
+  fetch("http://localhost:4000/questions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setQuestions((questions) => [...questions, data]);
+        setFormData({
+          prompt: "",
+          answers: ["", "", "", ""],
+          correctIndex: 0,
+        });
+      })
 
   return (
     <section>
